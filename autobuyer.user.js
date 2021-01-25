@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FUT 21 Autobuyer Menu with TamperMonkey
 // @namespace    http://tampermonkey.net/
-// @version      2.0.8
+// @version      2.0.9
 // @updateURL    https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @downloadURL  https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @description  FUT Snipping Tool
@@ -291,6 +291,10 @@
         }
         if (settingsJson.abSettings.telegramBuy) {
             jQuery(nameTelegramBuy).val(settingsJson.abSettings.telegramBuy);
+        }
+		
+		if (settingsJson.abSettings.skipPlayers) {
+            jQuery('#skip-players').val(settingsJson.abSettings.skipPlayers);
         }
 
         let savedCriteria = settingsJson.searchCriteria || {};
@@ -967,6 +971,20 @@
                         '</div>' +
                         '<div><br></div>' +
                         '<hr>' +
+						'<div class="search-price-header">' +
+                        '   <h1 class="secondary">Skip players:</h1>' +
+                        '</div>' +
+						'<div class="price-filter">' +
+						'	<div class="info">' +
+						'		<span class="secondary label">Players to skip<br><small>Players that will be skipped. Separed by line breaks</small></span> ' +
+						'</div>'+
+						'	<div class="buttonInfo">' +
+						'		<div class="inputBox">' +
+						'			<textarea multiple="multiple" id="skip-players" name="skipPlayers" style="padding: 10px;width: 100%;font-family: UltimateTeamCondensed,sans-serif;font-size: 1.6em;color: #e2dde2;text-transform: uppercase;background-color: #171826; overflow-y : scroll"></textarea>'+
+						'		</div>'+
+						'	</div>'+
+						'</div>'+
+						'<hr>' +						
                         '<div class="search-price-header">' +
                         '   <h1 class="secondary">Captcha settings:</h1>' +
                         '</div>' +
@@ -1284,6 +1302,10 @@
                 settingsJson.abSettings.telegramBuy = jQuery(nameTelegramBuy).val();
             }
 
+			if (jQuery('#skip-players').val() !== ''){
+				settingsJson.abSettings.skipPlayers = jQuery('#skip-players').val();
+			}			
+
             if (window.notificationEnabled) {
                 settingsJson.abSettings.notificationEnabled = window.notificationEnabled;
             }
@@ -1374,6 +1396,7 @@
         jQuery(nameTelegramBotToken).val('');
         jQuery(nameTelegramChatId).val('');
         jQuery(nameTelegramBuy).val('');
+		jQuery('#skip-players').val('');		
         window.useRandMinBuy = false;
         window.useRandMinBid = false;
         window.addDelayAfterBuy = false;
@@ -2027,6 +2050,17 @@
                         writeToDebugLog("| " + rating_txt + ' | ' + player_name + ' | ' + bid_txt + ' | ' + buy_txt + ' | ' + expire_time + ' | ' + action_txt);
                         continue;
                     }
+					if ($('#skip-players').val() !== '') {
+						let player_name = window.getItemName(player).toLowerCase().trim();
+						var playersToSkip = $('#skip-players').val().toLowerCase().split(/\n/);
+						let player_rating = parseInt(player.rating);
+						var playerNameWithRating = player_name + '-' + player_rating;
+						if (playersToSkip.includes(playerNameWithRating) ||  playersToSkip.includes(player_name)){
+							action_txt = 'skip >>> (Founded a player to skip)';
+							writeToDebugLog("| " + rating_txt + ' | ' + player_name + ' | ' + bid_txt + ' | ' + buy_txt + ' | ' + expire_time + ' | ' + action_txt);
+							continue;
+						}
+					}					
                     // ============================================================================================================
 
                     if(player.preferredPosition == 0 && window.addFilterGK == true){
