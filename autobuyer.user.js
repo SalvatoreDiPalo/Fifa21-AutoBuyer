@@ -1643,6 +1643,9 @@
     window.writeToDebugLog = function (message) {
         var $log = jQuery(nameAutoBuyerFoundLog);
         message = "[" + new Date().toLocaleTimeString() + "] " + message + "\n";
+		if($log.length >= 150000){
+			$log.val('');
+		}
         $log.val($log.val() + message);
         $log.scrollTop($log[0].scrollHeight);
     };
@@ -2052,7 +2055,7 @@
                     }
 					if ($('#skip-players').val() !== '') {
 						let player_name = window.getItemName(player).toLowerCase().trim();
-						var playersToSkip = $('#skip-players').val().toLowerCase().split(/\n/);
+						var playersToSkip = $('#skip-players').val().toLowerCase().trim().split(/\n/);
 						let player_rating = parseInt(player.rating);
 						var playerNameWithRating = player_name + '-' + player_rating;
 						if (playersToSkip.includes(playerNameWithRating) ||  playersToSkip.includes(player_name)){
