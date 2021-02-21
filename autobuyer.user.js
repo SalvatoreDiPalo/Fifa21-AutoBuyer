@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FUT 21 Autobuyer Menu with TamperMonkey
 // @namespace    http://tampermonkey.net/
-// @version      2.0.11
+// @version      2.0.12
 // @updateURL    https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @downloadURL  https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @description  FUT Snipping Tool
@@ -1643,7 +1643,7 @@
     window.writeToDebugLog = function (message) {
         var $log = jQuery(nameAutoBuyerFoundLog);
         message = "[" + new Date().toLocaleTimeString() + "] " + message + "\n";
-		if($log.length >= 150000){
+		if($log.val().length >= 150000){
 			$log.val('');
 		}
         $log.val($log.val() + message);
