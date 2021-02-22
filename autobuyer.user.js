@@ -1632,7 +1632,7 @@
         var $log = jQuery(nameAutoBuyerFoundLog);
 		var length = jQuery(nameToClearLog);
         message = "[" + new Date().toLocaleTimeString() + "] " + message + "\n";
-		if (length && $log.val().length >= length.val()) {
+		if (length && length.val() && $log.val().length >= length.val()) {
 			$log.val('');
 		}
         $log.val($log.val() + message);
