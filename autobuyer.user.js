@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FUT 21 Autobuyer Menu with TamperMonkey
 // @namespace    http://tampermonkey.net/
-// @version      2.0.12
+// @version      2.0.13.3
 // @updateURL    https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @downloadURL  https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @description  FUT Snipping Tool
@@ -111,6 +111,7 @@
         nameAbActiveTransfers = '#elem_' + makeid(15),
         nameAbNumberFilterSearch = '#elem_' + makeid(15),
         nameAbStopErrorCode = '#elem_' + makeid(15),
+        nameToClearLog = '#elem_' + makeid(15),
         nameSearchWrapper = '#elem_' + makeid(15),
         nameWinMp3 = '#elem_' + makeid(15),
         nameCapatchaMp3 = '#elem_' + makeid(15),
@@ -1156,6 +1157,16 @@
                         '       </div>' +
                         '   </div>' +
                         '</div>' +
+                        '<div class="price-filter">' +
+                        '   <div class="info">' +
+                        '       <span class="secondary label">Length for which to clean the logs avoiding lag:<br/><small>(Eg. 100000)</small></span>' +
+                        '   </div>' +
+                        '   <div class="buttonInfo">' +
+                        '       <div class="inputBox">' +
+                        '           <input type="tel" class="numericInput" id="' + nameToClearLog.substring(1) + '" placeholder="100000">' +
+                        '       </div>' +
+                        '   </div>' +
+                        '</div>' +		
                         '<audio id="' + nameWinMp3.substring(1) + '" hidden">\n' +
                         '  <source src="https://proxy.notificationsounds.com/notification-sounds/coins-497/download/file-sounds-869-coins.ogg" type="audio/ogg">\n' +
                         '  <source src="https://proxy.notificationsounds.com/notification-sounds/coins-497/download/file-sounds-869-coins.mp3" type="audio/mpeg">\n' +
@@ -1642,8 +1653,9 @@
 
     window.writeToDebugLog = function (message) {
         var $log = jQuery(nameAutoBuyerFoundLog);
+		var length = jQuery(nameToClearLog);
         message = "[" + new Date().toLocaleTimeString() + "] " + message + "\n";
-		if($log.val().length >= 150000){
+		if (length && length.val() && $log.val().length >= length.val()) {
 			$log.val('');
 		}
         $log.val($log.val() + message);
