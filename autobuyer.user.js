@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FUT 21 Autobuyer Menu with TamperMonkey
 // @namespace    http://tampermonkey.net/
-// @version      2.0.13.4
+// @version      2.0.8.1
 // @updateURL    https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @downloadURL  https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @description  FUT Snipping Tool
@@ -120,6 +120,7 @@
         nameProxyLogin = '#elem_' + makeid(15),
         nameAntiCaptchKey = '#elem_' + makeid(15),
         nameProxyPassword = '#elem_' + makeid(15);
+		nameSkipPlayers = '#elem_' + makeid(15);
 
     window.loadFilter = function () {
         var filterName = $('select[name=filters] option').filter(':selected').val();
@@ -299,7 +300,7 @@
         }
 		
 		if (settingsJson.abSettings.skipPlayers) {
-            jQuery('#skip-players').val(settingsJson.abSettings.skipPlayers);
+            jQuery(nameSkipPlayers).val(settingsJson.abSettings.skipPlayers);
         }
 
         let savedCriteria = settingsJson.searchCriteria || {};
@@ -985,7 +986,7 @@
 						'</div>'+
 						'	<div class="buttonInfo">' +
 						'		<div class="inputBox">' +
-						'			<textarea multiple="multiple" id="skip-players" name="skipPlayers" style="padding: 10px;width: 100%;font-family: UltimateTeamCondensed,sans-serif;font-size: 1.6em;color: #e2dde2;text-transform: uppercase;background-color: #171826; overflow-y : scroll"></textarea>'+
+						'			<textarea multiple="multiple" id="' + nameSkipPlayers.substring(1) + '" style="padding: 10px;width: 100%;font-family: UltimateTeamCondensed,sans-serif;font-size: 1.6em;color: #e2dde2;text-transform: uppercase;background-color: #171826; overflow-y : scroll"></textarea>'+
 						'		</div>'+
 						'	</div>'+
 						'</div>'+
@@ -1317,8 +1318,8 @@
                 settingsJson.abSettings.telegramBuy = jQuery(nameTelegramBuy).val();
             }
 
-			if (jQuery('#skip-players').val() !== ''){
-				settingsJson.abSettings.skipPlayers = jQuery('#skip-players').val();
+			if (jQuery(nameSkipPlayers).val() !== ''){
+				settingsJson.abSettings.skipPlayers = jQuery(nameSkipPlayers).val();
 			}			
 
             if (window.notificationEnabled) {
@@ -1415,7 +1416,8 @@
         jQuery(nameTelegramBotToken).val('');
         jQuery(nameTelegramChatId).val('');
         jQuery(nameTelegramBuy).val('');
-		jQuery('#skip-players').val('');		
+		jQuery(nameSkipPlayers).val('');
+		jQuery(nameToClearLog).val('');
         window.useRandMinBuy = false;
         window.useRandMinBid = false;
         window.addDelayAfterBuy = false;
@@ -2073,9 +2075,9 @@
                         writeToDebugLog("| " + rating_txt + ' | ' + player_name + ' | ' + bid_txt + ' | ' + buy_txt + ' | ' + expire_time + ' | ' + action_txt);
                         continue;
                     }
-					if ($('#skip-players').val() !== '') {
+					if ($(nameSkipPlayers).val() !== '') {
 						let player_name = window.getItemName(player).toLowerCase().trim();
-						var playersToSkip = $('#skip-players').val().toLowerCase().trim().split(/\n/);
+						var playersToSkip = $(nameSkipPlayers).val().toLowerCase().trim().split(/\n/);
 						let player_rating = parseInt(player.rating);
 						var playerNameWithRating = player_name + '-' + player_rating;
 						if (playersToSkip.includes(playerNameWithRating) ||  playersToSkip.includes(player_name)){
