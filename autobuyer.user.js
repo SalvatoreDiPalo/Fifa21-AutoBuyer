@@ -1406,6 +1406,7 @@
         jQuery(nameAbMessageNotificationToggle).removeClass("toggled");
         window.soundEnabled = false;
         jQuery(nameAbSoundToggle).removeClass("toggled");
+		jQuery(nameToClearLog).val('');
 
         if (e) {
             jQuery(nameSelectedFilter).find('option').attr("selected", false);
