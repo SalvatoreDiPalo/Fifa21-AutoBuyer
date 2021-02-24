@@ -283,6 +283,10 @@
         if (settingsJson.abSettings.antiCaptchKey) {
             jQuery(nameAntiCaptchKey).val(settingsJson.abSettings.antiCaptchKey);
         }
+		
+		if (settingsJson.abSettings.logsNumber) {
+            jQuery(nameToClearLog).val(settingsJson.abSettings.logsNumber);
+        }
 
         if (settingsJson.abSettings.telegramBotToken) {
             jQuery(nameTelegramBotToken).val(settingsJson.abSettings.telegramBotToken);
@@ -1325,6 +1329,10 @@
             if (jQuery(nameAntiCaptchKey).val() !== '') {
                 settingsJson.abSettings.antiCaptchKey = jQuery(nameAntiCaptchKey).val();
             }
+			
+            if (jQuery(nameToClearLog).val() !== '') {
+                settingsJson.abSettings.logsNumber = jQuery(nameToClearLog).val();
+            }			
 
             var currentFilterName = $('select[name=filters] option').filter(':selected').val();
             if (currentFilterName === 'Choose filter to load') {
