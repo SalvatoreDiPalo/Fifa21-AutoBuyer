@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FUT 21 Autobuyer Menu with TamperMonkey
 // @namespace    http://tampermonkey.net/
-// @version      2.0.13.3
+// @version      2.0.13.4
 // @updateURL    https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @downloadURL  https://raw.githubusercontent.com/chithakumar13/Fifa21-AutoBuyer/master/autobuyer.js
 // @description  FUT Snipping Tool
@@ -282,6 +282,10 @@
         }
         if (settingsJson.abSettings.antiCaptchKey) {
             jQuery(nameAntiCaptchKey).val(settingsJson.abSettings.antiCaptchKey);
+        }
+		
+		if (settingsJson.abSettings.logsNumber) {
+            jQuery(nameToClearLog).val(settingsJson.abSettings.logsNumber);
         }
 
         if (settingsJson.abSettings.telegramBotToken) {
@@ -1347,6 +1351,10 @@
             if (jQuery(nameAntiCaptchKey).val() !== '') {
                 settingsJson.abSettings.antiCaptchKey = jQuery(nameAntiCaptchKey).val();
             }
+			
+			if (jQuery(nameToClearLog).val() !== '') {
+                settingsJson.abSettings.logsNumber = jQuery(nameToClearLog).val();
+            }	
 
             var currentFilterName = $('select[name=filters] option').filter(':selected').val();
             if (currentFilterName === 'Choose filter to load') {
