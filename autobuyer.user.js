@@ -119,7 +119,7 @@
         nameProxyPort = '#elem_' + makeid(15),
         nameProxyLogin = '#elem_' + makeid(15),
         nameAntiCaptchKey = '#elem_' + makeid(15),
-        nameProxyPassword = '#elem_' + makeid(15);
+        nameProxyPassword = '#elem_' + makeid(15),
 		nameSkipPlayers = '#elem_' + makeid(15);
 
     window.loadFilter = function () {
@@ -2075,9 +2075,9 @@
                         writeToDebugLog("| " + rating_txt + ' | ' + player_name + ' | ' + bid_txt + ' | ' + buy_txt + ' | ' + expire_time + ' | ' + action_txt);
                         continue;
                     }
-					if ($(nameSkipPlayers).val() !== '') {
+					if (jQuery(nameSkipPlayers).val() !== '') {
 						let player_name = window.getItemName(player).toLowerCase().trim();
-						var playersToSkip = $(nameSkipPlayers).val().toLowerCase().trim().split(/\n/);
+						var playersToSkip = jQuery(nameSkipPlayers).val().toLowerCase().trim().split(/\n/);
 						let player_rating = parseInt(player.rating);
 						var playerNameWithRating = player_name + '-' + player_rating;
 						if (playersToSkip.includes(playerNameWithRating) ||  playersToSkip.includes(player_name)){
