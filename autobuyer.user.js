@@ -49,12 +49,12 @@
     var _searchViewModel = null;
 
 
-// DIV names
+    // DIV names
     function makeid(length) {
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
+        for (var i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         return result;
@@ -418,7 +418,7 @@
         $buyerLog.val("");
     };
 
-    utils.JS.inherits(UTAutoBuyerViewController, UTMarketSearchFiltersViewController);
+    JSUtils.inherits(UTAutoBuyerViewController, UTMarketSearchFiltersViewController);
 
     window.UTAutoBuyerViewController.prototype.init = function init() {
         if (!this.initialized) {
@@ -592,7 +592,7 @@
 
                 services.Item.clearTransferMarketCache();
 
-                let items = await window.getBinSearchResult({...criteria});
+                let items = await window.getBinSearchResult({ ...criteria });
                 if (items.length) {
 
                     allPrices = allPrices.concat(items.map(i => i._auction.buyNowPrice));
@@ -1304,7 +1304,7 @@
                 settingsJson.abSettings.addDelayAfterBuy = window.addDelayAfterBuy;
             }
 
-            if(window.addFilterGK){
+            if (window.addFilterGK) {
                 settingsJson.abSettings.addFilterGK = window.addFilterGK;
             }
 
@@ -1365,8 +1365,8 @@
 
             if (filterName) {
                 filterName = filterName.toUpperCase();
-                window.checkAndOption(nameFilterDropdown,filterName);
-                window.checkAndOption(nameSelectedFilter,filterName);
+                window.checkAndOption(nameFilterDropdown, filterName);
+                window.checkAndOption(nameSelectedFilter, filterName);
 
                 $(`select[name=filters] option[value="${filterName}"]`).attr("selected", true);
                 GM_setValue(filterName, JSON.stringify(settingsJson));
@@ -1379,7 +1379,7 @@
         }, 200);
     }
 
-    window.checkAndOption = function(dropdownSelector, optionName){
+    window.checkAndOption = function (dropdownSelector, optionName) {
         let exist = false;
         $(`${dropdownSelector} option`).each(function () {
             if (this.value === optionName) {
@@ -1388,7 +1388,7 @@
             }
         });
 
-        if(!exist){
+        if (!exist) {
             $(dropdownSelector).append($('<option></option>').attr('value', optionName).text(optionName));
         }
     }
@@ -1658,7 +1658,9 @@
         }
         message = "[" + new Date().toLocaleTimeString() + "] " + message + "\n";
         $log.val($log.val() + message);
-        $log.scrollTop($log[0].scrollHeight);
+
+        if ($log[0])
+            $log.scrollTop($log[0].scrollHeight);
     };
 
     window.writeToDebugLog = function (message) {
@@ -1669,7 +1671,9 @@
 			$log.val('');
 		}
         $log.val($log.val() + message);
-        $log.scrollTop($log[0].scrollHeight);
+
+        if ($log[0])
+            $log.scrollTop($log[0].scrollHeight);
     };
 
     window.notify = function (message, notificationType) {
@@ -2088,7 +2092,7 @@
 					}					
                     // ============================================================================================================
 
-                    if(player.preferredPosition == 0 && window.addFilterGK == true){
+                    if (player.preferredPosition == 0 && window.addFilterGK == true) {
                         action_txt = 'skip >>> (is a Goalkeeper)';
                         let player_name = window.getItemName(player);
                         writeToDebugLog("| " + rating_txt + ' | ' + player_name + ' | ' + bid_txt + ' | ' + buy_txt + ' | ' + expire_time + ' | ' + action_txt);
@@ -2151,7 +2155,7 @@
                     window.isSearchInProgress = false;
                 }
             } else if (!response.success) {
-                if (response.status == HttpStatusCode.CAPTCHA_REQUIRED) {
+                if (response.status === UtasErrorCode.CAPTCHA_REQUIRED || (response.error && response.error.code == UtasErrorCode.CAPTCHA_REQUIRED)) {
                     if (window.autoSolveCaptcha) {
                         writeToLog('------------------------------------------------------------------------------------------');
                         writeToLog('[!!!] Captcha got triggered, trying to solve it');
@@ -2173,7 +2177,7 @@
         }));
     };
 
-    window.showCaptchaLogs = function() {
+    window.showCaptchaLogs = function () {
 
         window.sendNotificationToUser('Captcha, please solve the problem so that the bot can work again.');
 
@@ -2192,11 +2196,11 @@
         var websitePublicKey = "A4EECF77-AC87-8C8D-5754-BF882F72063B";
 
         var proxyAddress = jQuery(nameProxyAddress).val();
-        var proxyPort =jQuery(nameProxyPort).val();
+        var proxyPort = jQuery(nameProxyPort).val();
         var proxyLogin = jQuery(nameProxyLogin).val();
         var proxyPassword = jQuery(nameProxyPassword).val();
 
-        if(!proxyAddress || !proxyPort || !apikey){
+        if (!proxyAddress || !proxyPort || !apikey) {
             writeToLog('Proxy info not filled properly');
             window.showCaptchaLogs();
             return;
@@ -2214,19 +2218,19 @@
                     let payload = {
                         "clientKey": apikey,
                         "task":
-                            {
-                                "type": "FunCaptchaTask",
-                                "websiteURL": websiteURL,
-                                "websitePublicKey": websitePublicKey,
-                                "funcaptchaApiJSSubdomain": "ea-api.arkoselabs.com",
-                                "data": responseData.response,
-                                "proxyType": "http",
-                                "proxyAddress": proxyAddress,
-                                "proxyPort": proxyPort,
-                                "proxyLogin": proxyLogin,
-                                "proxyPassword": proxyPassword,
-                                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"
-                            }
+                        {
+                            "type": "FunCaptchaTask",
+                            "websiteURL": websiteURL,
+                            "websitePublicKey": websitePublicKey,
+                            "funcaptchaApiJSSubdomain": "ea-api.arkoselabs.com",
+                            "data": responseData.response,
+                            "proxyType": "http",
+                            "proxyAddress": proxyAddress,
+                            "proxyPort": proxyPort,
+                            "proxyLogin": proxyLogin,
+                            "proxyPassword": proxyPassword,
+                            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"
+                        }
                     };
 
                     var xhr = new XMLHttpRequest();
@@ -2390,7 +2394,7 @@
                     }, window.getRandomWait());
                 } else {
                     window.bidCount++;
-                    services.Item.move(player, enums.FUTItemPile.CLUB).observe(this, (function (sender, moveResponse) {
+                    services.Item.move(player, ItemPile.CLUB).observe(this, (function (sender, moveResponse) {
                         let sym = " B:" + window.format_string(window.bidCount.toString(), 4);
                         writeToLog(sym + " | " + player_rating + " | " + player_name + ' | ' + price_txt + ((isBin) ? ' | buy | success | move to club' : ' | bid | success | waiting to expire'));
                     }));
